@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mi primer widget</title>   
+    
+    <link href="css/estilos.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/hp.menuFlotante.js"></script>    
+    <script type="text/javascript" src="js/main.js"></script>
+
+    <style type="text/css">
+    .menu_flotante {
+        width: 140px; height: auto; 
+        background: #f9f9f9; 
+        border-radius: 5px;
+        position: absolute; 
+        z-index: 99999; 
+        padding: 8px;
+        -webkit-box-shadow: 1px 1px 4px 0px rgba(136,136,136,0.5);
+        -moz-box-shadow: 1px 1px 4px 0px rgba(136,136,136,0.5);
+        box-shadow: 1px 1px 4px 0px rgba(136,136,136,0.5);
+    }
+    .menu_flotante div{
+        text-align: left !important;
+        padding: 8px 10px !important;
+        margin: 0px !important;
+        cursor: pointer;
+        font-size: 14px !important;
+        font-weight: bold;
+        color: #888;
+        border-bottom: 1px solid #e2e2e2;
+
+    }
+    .menu_flotante div i {margin-right: 3px;}
+    .menu_flotante div:last-child {border: none;}
+    .menu_flotante div:hover {
+        background: #e9e9e9;
+    }
+    .clear{clear:both;}
+    #asdf {padding: 15px; background: #f8f8f8;}
+    </style>
+
+</head>
+<body>
+    <div id="main_wrapper">
+        <header>
+            <h1> <i class="fa fa-play-circle fa-lg"></i> widget jQuery Menu Flotante</h1>
+        </header>        
+        <div id="main_container">
+            <div id="content">
+                <div id="editar">
+                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                     proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <div class="clear"></div>
+                <div id="asdf">
+                    <h2>Div editable</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <ul class="btn2">
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                    <li>Item</li>
+                </ul>
+            </div>
+        </div>
+        <footer></footer>
+    </div>    
+</body>
+</html>

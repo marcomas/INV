@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+
+<head>
+
+	<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>
+
+    <script>
+
+        var widthGridView = 1000;
+        var bShowGridView = false;
+        var column1 = new Array();
+        var column2 = new Array();
+        var column3 = new Array();
+        var column4 = new Array();
+        var column5 = new Array();
+        var intervalVarRefreshGridView;
+
+        $(document).ready(function() {
+            var theme = getDemoTheme();
+
+            $("#clearfiltersbutton").click(function() {
+                $("#jqxgrid").jqxGrid('clearfilters');
+            });
+
+            $("#loadGridView").click(function() {
+                // prepare the data
+                var data = LoadDataGridView(column1.length);
+
+                var customsortfunc = function(column, direction) {
+                    var sortdata = new Array();
+
+                    if (direction == 'ascending') direction = true;
+                    if (direction == 'descending') direction = false;
+
+                    if (direction != null) {
+                        for (i = 0; i < data.length; i++) {
+                            sortdata.push(data[i]);
+                        }
+                    }
+                    else sortdata = data;
+
+                    var tmpToString = Object.prototype.toString;
+                    Object.prototype.toString = (typeof column == "function") ? column : function() { return this[column] };
+                    if (direction != null) {
+                        sortdata.sort(compare);
+                        if (!direction) {
+                            sortdata.reverse();
+                        }
+                    }
+                    source.localdata = sortdata;
+                    $("#jqxgrid").jqxGrid('databind', source, 'sort');
+                    Object.prototype.toString = tmpToString;
+                }
+
+                // custom comparer.
+                var compare = function(value1, value2) {
+                    value1 = String(value1).toLowerCase();
+                    value2 = String(value2).toLowerCase();
+
+                    try {
+                        var tmpvalue1 = parseFloat(value1);
+                        if (isNaN(tmpvalue1)) {
+                            if (value1 < value2) { return -1; }
+                            if (value1 > value2) { return 1; }
+                        }
+                        else {
+                            var tmpvalue2 = parseFloat(value2);
+                            if (tmpvalue1 < tmpvalue2) { return -1; }
+                            if (tmpvalue1 > tmpvalue2) { return 1; }
+                        }
+                    }
+                    catch (error) {
+                        var er = error;
+                    }
+
+                    return 0;
+                };
+
+                var source =
+                    {
+                        localdata: data,
+                        sort: customsortfunc,
+                        datafields:
+                        [
+                            { name: 'descr', type: 'string' },
+                            { name: 'usuario', type: 'string' },
+                            { name: 'accion', type: 'string' },
+                            { name: 'fecha', type: 'date' },
+                            { name: 'hora', type: 'string' }
+                        ],
+                        datatype: "array"
+                    };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+
+                $("#jqxgrid").jqxGrid(
+                    {
+                        width: widthGridView,
+                        source: dataAdapter,
+                        theme: theme,
+                        showfilterrow: true,
+                        filterable: true,
+                        sortable: true,
+                        pageable: true,
+                        pagesize: 12,
+                        height: 450,
+                        columnsresize: true,
+                        ready: function() {
+                            $("#jqxgrid").jqxGrid('sortby', 'id', 'asc');
+                        },
+                        showstatusbar: false,
+                        columns: [
+                            { text: 'Descripción', columntype: 'textbox', filtertype: 'textbox', datafield: 'descr', width: 500 },
+                            { text: 'Usuario', columntype: 'textbox', filtertype: 'textbox', datafield: 'usuario', width: 150 },
+                            { text: 'Acción', columntype: 'textbox', filtertype: 'checkedlist', datafield: 'accion', width: 150 },
+                            { text: 'Fecha', columntype: 'textbox', filtertype: 'date', datafield: 'fecha', width: 100, cellsformat: 'dd/MM/yyyy' },
+                            { text: 'Hora', columntype: 'textbox', filtertype: 'textbox', datafield: 'hora', width: 100 }
+                       ]
+                    });
+            });
+            $("#jqxwindow").jqxWindow({ resizable: false, theme: theme, autoOpen: false, width: 210, height: 180 });
+        });
+
+        function RefreshGridView() {
+            clearInterval(intervalVarRefreshGridView);
+            $("#loadGridView").click();
+            $("#jqxgrid").jqxGrid('clearfilters');
+            $("#jqxgrid").fadeIn();
+            $("#lbBuscando").fadeOut();
+        }
+
+        function LoadDataGridView(rowscount, hasNullValues) {
+            var data = new Array();
+            if (rowscount == undefined) rowscount = 100;
+            for (var i = 0; i < rowscount; i++) {
+                var row = {};
+                var date_fecha = new Date(column4[i].split('/')[2], column4[i].split('/')[1]-1, column4[i].split('/')[0]);
+
+                row["id"] = i;
+                row["descr"] = column1[i];
+                row["usuario"] = column2[i];
+                row["accion"] = column3[i];
+                row["fecha"] = date_fecha;
+                row["hora"] = column5[i];
+                data[i] = row;
+            }
+            return data;
+        }
+
+        function UnloadData_Columns() {
+            aSource = [];
+            column1 = [];
+            column2 = [];
+            column3 = [];
+            column4 = [];
+            column5 = [];
+        }
+
+        function LoadGridView(index) {
+            column1.push(aSource[index].split('|')[0]);
+            column2.push(aSource[index].split('|')[1]);
+            column3.push(aSource[index].split('|')[2]);
+            column4.push(aSource[index].split('|')[3]);
+            column5.push(aSource[index].split('|')[4]);
+        }
+
+    </script>
+
+</head>
+<body id="idBody">
+
+    <div style="display:none">
+        <input style='margin-top: 10px;' type="button" id="loadGridView" value="Carga data en Grid View" />
+    </div>
+    <div id="jqxgrid"></div>
+</body>
+
+</html>

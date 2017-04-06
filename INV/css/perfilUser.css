@@ -1,0 +1,21 @@
+﻿.clear { clear: both; }.user_box {box-shadow: 1px 1px 4px #777; display: none; position: absolute; border: 1px solid #dedede; z-index: 10000; background: #fff; width: 550px; height: auto; padding: 15px; right: 40px; top: 50px;}
+.user_box .img_userbox {width: 100px; height: 100px;padding: 2px; border: 1px solid #dedede; float: left;display: none;}
+.user_box .text_userbox {display: block; width: 100%;}
+.user_box .text_userbox h2 {margin: 0px 0px 2px 0px; font-size: 14px; font-family: "Verdana"; font-weight:bold; font-style: normal; color: #002f4d;}
+.user_box .text_userbox h3 {text-align: left; margin: 0px 0px 2px 0px; font-size: 13px; font-family: "Verdana"; font-weight:normal; font-style: normal; color: #666;}
+.user_box .text_userbox button {left: 415px;position: relative; text-align: center; font-size: 16px; text-transform: uppercase; font-family: "Gnuolane"; display: inline-block; color: #fff; text-decoration: none; width: 100px; padding: 5px 5px 5px 5px; border-bottom: 1px solid #e0e0e0; cursor: pointer; background: #52b9a3;margin-right: 5px; }
+.user_box .text_userbox button:hover {background:#002f4d ;}
+.user_box .text_userbox a {position: relative;right: 100px;margin-right: 5px;color: #e58144;cursor: pointer;text-decoration: none;}
+.user_box .text_userbox .dividir {border-bottom: 2px solid #dedede;display: block;width: 100%;margin: 10px 0;}
+.user_box .text_userbox form {text-align: left;}
+.user_box .text_userbox form > span { color:red; }
+.user_box .text_userbox form .seccionForm.form1 {display: inline-table;margin: 10px 0;width:100%;}
+.user_box .text_userbox form input {border-radius:0!important;padding: 5px;border: none;border-bottom: 1px solid #dedede;width: 100%;color: #000;}
+.user_box .text_userbox form input:hover {border-color: #52b9a3!important;}
+.user_box .text_userbox form label {text-align: left;display: block;color:#777;}
+.user_box .text_userbox form div.seccionForm.form1 div {width: 50%;padding: 2px;display: inline-table;}
+.passwordChange {display: none!important;}
+.eventPassword { display:flex; } .eventPassword div { flex: 3; display: block!important;} .eventPassword div input[type="password"] { margin-left: 0!important; }
+#forgetPassword, #guardarDatospersonales {display: none;}
+.seccionForm.passwordChange + .btnGuardarContrasena {visibility: hidden!important;}
+.cerrarPerfil {background: #777 url(../images/close_chat.png) no-repeat 2px 2px; width: 24px; padding: 2px; height: 24px; display: block; -webkit-border-radius: 45px 45px; -moz-border-radius: 45px / 45px; border-radius: 45px / 45px; position: absolute; right: 10px; top: 10px; z-index: 999; cursor: pointer; }

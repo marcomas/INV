@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<head>
+
+    <script>
+    
+        var widthGridViewListaSeguros = 410;
+        var columnListaSeguros1 = new Array();
+        var aSourceListaSeguros = new Array();
+        var NombreSeguro = '';
+        
+        $("#jqxgridListaSeguros").fadeOut();
+
+        $(function() {
+            var theme = getDemoTheme();
+
+            $("#jqxgridListaSeguros").on('rowselect', function(event) {
+                NombreSeguro = event.args.row.seguro;
+            });
+
+            $("#loadGridViewListaSeguros").click(function() {
+                // prepare the data
+                var data = LoadDataGridViewListaSeguros(columnListaSeguros1.length);
+
+                var customsortfunc = function(column, direction) {
+                    var sortdata = new Array();
+
+                    if (direction == 'ascending') direction = true;
+                    if (direction == 'descending') direction = false;
+
+                    if (direction != null) {
+                        for (i = 0; i < data.length; i++) {
+                            sortdata.push(data[i]);
+                        }
+                    }
+                    else sortdata = data;
+
+                    var tmpToString = Object.prototype.toString;
+                    Object.prototype.toString = (typeof column == "function") ? column : function() { return this[column] };
+                    if (direction != null) {
+                        sortdata.sort(compare);
+                        if (!direction) {
+                            sortdata.reverse();
+                        }
+                    }
+                    source.localdata = sortdata;
+                    $("#jqxgridListaSeguros").jqxGrid('databind', source, 'sort');
+                    Object.prototype.toString = tmpToString;
+                }
+
+                // custom comparer.
+                var compare = function(value1, value2) {
+                    value1 = String(value1).toLowerCase();
+                    value2 = String(value2).toLowerCase();
+
+                    try {
+                        var tmpvalue1 = parseFloat(value1);
+                        if (isNaN(tmpvalue1)) {
+                            if (value1 < value2) { return -1; }
+                            if (value1 > value2) { return 1; }
+                        }
+                        else {
+                            var tmpvalue2 = parseFloat(value2);
+                            if (tmpvalue1 < tmpvalue2) { return -1; }
+                            if (tmpvalue1 > tmpvalue2) { return 1; }
+                        }
+                    }
+                    catch (error) {
+                        var er = error;
+                    }
+
+                    return 0;
+                };
+
+                var source =
+		        {
+		            localdata: data,
+		            sort: customsortfunc,
+		            datafields:
+			        [
+				        { name: 'seguro', type: 'string' }
+			        ],
+		            datatype: "array"
+		        };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+
+                var self = this;
+                var pagerrenderer = function() {
+                    var element = $("<div style='margin-left: 10px; margin-top: 5px; width: 100%; height: 100%;'></div>");
+                    var datainfo = $("#jqxgridListaSeguros").jqxGrid('getdatainformation');
+                    var paginginfo = datainfo.paginginformation;
+
+                    var leftButton = $("<div style='padding: 0px; float: left;'><div style='margin-left: 9px; width: 16px; height: 16px;'></div></div>");
+                    leftButton.find('div').addClass('jqx-icon-arrow-left');
+                    leftButton.width(36);
+                    leftButton.jqxButton({ theme: theme });
+
+                    var rightButton = $("<div style='padding: 0px; margin: 0px 3px; float: left;'><div style='margin-left: 9px; width: 16px; height: 16px;'></div></div>");
+                    rightButton.find('div').addClass('jqx-icon-arrow-right');
+                    rightButton.width(36);
+                    rightButton.jqxButton({ theme: theme });
+
+                    var addButton = $("<div style='padding: 0px; float: right;'><img style='margin-left: -20px; width: 16px; height: 16px;'></div>");
+                    addButton.find('img').attr('src','../images/add.png');
+                    addButton.width(36);
+                    addButton.jqxButton({ theme: theme });
+
+                    var delButton = $("<div style='padding: 0px; float: right;'><img style='margin-left: 0px; width: 16px; height: 16px;'></div>");
+                    delButton.find('img').attr('src', '../images/close.png');
+                    delButton.width(36);
+                    delButton.jqxButton({ theme: theme });
+
+                    leftButton.appendTo(element);
+                    rightButton.appendTo(element);
+                    addButton.appendTo(element);
+                    delButton.appendTo(element);
+
+                    var label = $("<div style='font-size: 11px; margin: 2px 3px; font-weight: bold; float: left;'></div>");
+                    label.text("1-" + paginginfo.pagesize + ' de ' + datainfo.rowscount);
+                    label.appendTo(element);
+                    self.label = label;
+                    // update buttons states.
+                    var handleStates = function(event, button, className, add) {
+                        button.on(event, function() {
+                            if (add == true) {
+                                button.find('div').addClass(className);
+                            }
+                            else button.find('div').removeClass(className);
+                        });
+                    }
+
+                    if (theme != '') {
+                        handleStates('mousedown', rightButton, 'jqx-icon-arrow-right-selected-' + theme, true);
+                        handleStates('mouseup', rightButton, 'jqx-icon-arrow-right-selected-' + theme, false);
+                        handleStates('mousedown', leftButton, 'jqx-icon-arrow-left-selected-' + theme, true);
+                        handleStates('mouseup', leftButton, 'jqx-icon-arrow-left-selected-' + theme, false);
+
+                        handleStates('mouseenter', rightButton, 'jqx-icon-arrow-right-hover-' + theme, true);
+                        handleStates('mouseleave', rightButton, 'jqx-icon-arrow-right-hover-' + theme, false);
+                        handleStates('mouseenter', leftButton, 'jqx-icon-arrow-left-hover-' + theme, true);
+                        handleStates('mouseleave', leftButton, 'jqx-icon-arrow-left-hover-' + theme, false);
+                    }
+
+                    rightButton.click(function() {
+                        $("#jqxgridListaSeguros").jqxGrid('gotonextpage');
+                    });
+
+                    leftButton.click(function() {
+                        $("#jqxgridListaSeguros").jqxGrid('gotoprevpage');
+                    });
+
+                    addButton.click(function() {
+                        alert('add: ' + NombreSeguro);
+                    });
+
+                    delButton.click(function() {
+                        alert('del: ' + NombreSeguro);
+                    });
+
+                    return element;
+                }
+
+                $("#jqxgridListaSeguros").on('pagechanged', function() {
+                    var datainfo = $("#jqxgridListaSeguros").jqxGrid('getdatainformation');
+                    var paginginfo = datainfo.paginginformation;
+                    self.label.text(1 + paginginfo.pagenum * paginginfo.pagesize + "-" + Math.min(datainfo.rowscount, (paginginfo.pagenum + 1) * paginginfo.pagesize) + ' de ' + datainfo.rowscount);
+                });
+
+                $("#jqxgridListaSeguros").jqxGrid(
+		        {
+		            width: widthGridViewListaSeguros,
+		            source: dataAdapter,
+		            theme: theme,
+		            showfilterrow: true,
+		            filterable: true,
+		            sortable: true,
+		            pageable: true,
+		            autoheight: true,
+		            //height: 210,
+		            pagesize: 10,
+		            columnsresize: false,
+		            pagerrenderer: pagerrenderer,
+		            ready: function() {
+		                $("#jqxgridListaSeguros").jqxGrid('sortby', 'seguro', 'asc');
+		            },
+		            showstatusbar: false,
+		            columns: [
+			          { text: 'ListaSeguros', columntype: 'textbox', filtertype: 'textbox', datafield: 'seguro', width: 410 }
+			        ]
+		        });
+            });
+        });
+
+        function LoadDataGridViewListaSeguros(rowscount, hasNullValues) {
+            var data = new Array();
+            if (rowscount == undefined) rowscount = 100;
+            for (var i = 0; i < rowscount; i++) {
+                var row = {};
+                row["id"] = i;
+                row["seguro"] = columnListaSeguros1[i];
+                data[i] = row;
+            }
+            return data;
+        }
+
+        function LoadDataFromSource_GridViewListaSeguros(source) {
+            columnListaSeguros1 = [];
+            columnListaSeguros1 = source.split('$');
+        }
+
+        function RefreshGridViewListaSeguros() {
+            $("#loadGridViewListaSeguros").click();
+            $("#jqxgridListaSeguros").jqxGrid('clearfilters');
+            $("#jqxgridListaSeguros").fadeIn();
+        }
+
+    </script>
+
+</head>
+<body>
+    
+    <div style="display:none">
+        <input style='margin-top: 10px;' type="button" id="loadGridViewListaSeguros" />
+    </div>
+ 
+    <div id="jqxgridListaSeguros"></div>
+
+</body>
+
+</html>

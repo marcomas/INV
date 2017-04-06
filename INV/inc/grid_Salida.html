@@ -1,0 +1,239 @@
+﻿<html>
+
+<script>
+
+        //-- VARIABLES --//
+        var aSource = new Array();
+        var idRecordSelected = -1;
+
+        function Init_S() {
+            ShowGridView();
+        }
+
+        function GetSalida() {
+            UnloadData_Columns();
+            aSource = [];
+            var info ='';
+            $.ajax({
+                type: "POST",
+                url: "../WS/WSArticulo.aspx",
+                data: { fun: 'getSalidas', data: info },
+                async: false
+            }).done(function(data) {
+                if (data.split('§')[0] == "OK") {
+                    var source = data.split('§')[1];
+                    LoadDataFromSource(source);
+                }
+            });
+        }
+
+        function LoadDataFromSource(source) {
+            UnloadData_Columns();
+            aSource = source.split('$');
+            for (i = 0; i < aSource.length; i++) {
+                LoadGridView(i);
+            }
+        }
+
+        //-- GRID VIEW --//
+        var widthGridView = 1300;
+        var bShowGridView = false;
+        var column1 = new Array();
+        var column2 = new Array();
+        var column3 = new Array();
+        var column4 = new Array();
+        var column5 = new Array();
+        var column6 = new Array();
+        var column7 = new Array();
+        var column8 = new Array();
+        var column9 = new Array();
+        var intervalVarRefreshGridView;
+
+        $(document).ready(function () {
+            var theme = getDemoTheme();
+
+            $("#jqxgrid").on('rowselect', function (event) {
+                var id = event.args.row.id;
+                var index = aCodigos.indexOf(id);
+                if (index > -1) { GetValue(index); }
+                PrepareFieldsToSearchRecord();
+                $(".close_grid").click();
+            });
+
+            $("#loadGridView").click(function () {
+                // prepare the data
+                var data = LoadDataGridView(column1.length);
+
+                var customsortfunc = function (column, direction) {
+                    var sortdata = new Array();
+
+                    if (direction == 'ascending') direction = true;
+                    if (direction == 'descending') direction = false;
+
+                    if (direction != null) {
+                        for (i = 0; i < data.length; i++) {
+                            sortdata.push(data[i]);
+                        }
+                    }
+                    else sortdata = data;
+
+                    var tmpToString = Object.prototype.toString;
+                    Object.prototype.toString = (typeof column == "function") ? column : function () { return this[column] };
+                    if (direction != null) {
+                        sortdata.sort(compare);
+                        if (!direction) {
+                            sortdata.reverse();
+                        }
+                    }
+                    source.localdata = sortdata;
+                    $("#jqxgrid").jqxGrid('databind', source, 'sort');
+                    Object.prototype.toString = tmpToString;
+                }
+
+                // custom comparer.
+                var compare = function (value1, value2) {
+                    value1 = String(value1).toLowerCase();
+                    value2 = String(value2).toLowerCase();
+
+                    try {
+                        var tmpvalue1 = parseFloat(value1);
+                        if (isNaN(tmpvalue1)) {
+                            if (value1 < value2) { return -1; }
+                            if (value1 > value2) { return 1; }
+                        }
+                        else {
+                            var tmpvalue2 = parseFloat(value2);
+                            if (tmpvalue1 < tmpvalue2) { return -1; }
+                            if (tmpvalue1 > tmpvalue2) { return 1; }
+                        }
+                    }
+                    catch (error) {
+                        var er = error;
+                    }
+
+                    return 0;
+                };
+
+                var source =
+                {
+                    localdata: data,
+                    sort: customsortfunc,
+                    datafields:
+                    [
+                        { name: 'id', type: 'string' },
+                        { name: 'articulo', type: 'string' },
+                        { name: 'nivel', type: 'string' },
+                        { name: 'cantidad', type: 'string' },
+                        { name: 'responsable', type: 'string' },
+                        { name: 'mante', type: 'string' },
+                        { name: 'fechareg', type: 'date' },
+                        { name: 'fecharei', type: 'date' },
+                        { name: 'nota', type: 'string' }
+                    ],
+                    datatype: "array"
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+
+                $("#jqxgrid").jqxGrid(
+                {
+                    width: widthGridView,
+                    source: dataAdapter,
+                    theme: theme,
+                    showfilterrow: true,
+                    filterable: true,
+                    sortable: true,
+                    pageable: true,
+                    autoheight: true,
+                    pagesize: 15,
+                    columnsresize: true,
+                    ready: function () {
+                        $("#jqxgrid").jqxGrid('sortby', 'id', 'asc');
+                    },
+                    showstatusbar: false,
+                    columns: [
+                          { text: 'Id', columntype: 'textbox', filtertype: 'textbox', datafield: 'id', width: 0 },
+                          { text: 'Articulo', columntype: 'textbox', filtertype: 'checkedlist', datafield: 'articulo', width: 240 },
+                          { text: 'Nivel', columntype: 'textbox', filtertype: 'checkedlist', datafield: 'nivel', width: 240 },
+                          { text: 'Cantidad', columntype: 'textbox', filtertype: 'textbox', datafield: 'cantidad', width: 70 },
+                          { text: 'Responsable', columntype: 'textbox', filtertype: 'checkedlist', datafield: 'responsable', width: 220 },
+                          { text: 'Mantenimiento', columntype: 'textbox', filtertype: 'checkedlist', datafield: 'mante', width: 180 },
+                          { text: 'Fecha Registro', columntype: 'textbox', filtertype: 'date', datafield: 'fechareg', width: 120, cellsalign: 'right', cellsformat: 'dd/MM/yyyy' },
+                          { text: 'Fecha Reintegro', columntype: 'textbox', filtertype: 'date', datafield: 'fecharei', width: 120, cellsalign: 'right', cellsformat: 'dd/MM/yyyy' },
+                          { text: 'Nota', columntype: 'textbox', filtertype: 'textbox', datafield: 'nota', width: 110 }
+                    ]
+                });
+                $("#jqxgrid").jqxGrid('setcolumnproperty', 'id', 'hidden', true);
+            });
+            $("#jqxwindow").jqxWindow({ resizable: false, theme: theme, autoOpen: false, width: 210, height: 180 });
+        });
+
+        function RefreshGridView() {
+            clearInterval(intervalVarRefreshGridView);
+            $("#loadGridView").click();
+            $("#jqxgrid").jqxGrid('clearfilters');
+        }
+
+        function LoadDataGridView(rowscount, hasNullValues) {
+            var data = new Array();
+            if (rowscount == undefined) rowscount = 100;
+            for (var i = 0; i < rowscount; i++) {
+                var row = {};
+                row["id"] = i;
+                row["id"] = column1[i];
+                row["articulo"] = column2[i];
+                row["nivel"] = column3[i];
+                row["cantidad"] = column4[i];
+                row["responsable"] = column5[i];
+                row["mante"] = column6[i];
+                row["fechareg"] = column7[i];
+                row["fecharei"] = column8[i];
+                row["nota"] = column9[i];
+                data[i] = row;
+            }
+            return data;
+        }
+
+        function UnloadData_Columns() {
+            column1 = [];
+            column2 = [];
+            column3 = [];
+            column4 = [];
+            column5 = [];
+            column6 = [];
+            column7 = [];
+            column8 = [];
+            column9 = [];
+        }
+
+        function LoadGridView(index) {
+            column1.push(aSource[index].split('|')[0]);
+            column2.push(aSource[index].split('|')[1]);
+            column3.push(aSource[index].split('|')[2]);
+            column4.push(aSource[index].split('|')[3]);
+            column5.push(aSource[index].split('|')[4]);
+            column6.push(aSource[index].split('|')[5]);
+            column7.push(aSource[index].split('|')[6]);
+            column8.push(aSource[index].split('|')[7]);
+            column9.push(aSource[index].split('|')[8]);
+        }
+
+        function ShowGridView() {
+            $("#jqxgrid").jqxGrid('clearfilters');
+            GetSalida();
+            $("#divLista").fadeIn();
+            bShowGridView = true;
+            intervalVarRefreshGridView = setInterval(function () { RefreshGridView() }, 1000);
+        }
+
+</script>
+
+<body class="body_iframe">
+    <div class="overlay"></div>
+    <div style="display:none">
+        <input style='margin-top: 10px;' type="button" id="loadGridView" value="" />
+    </div>
+
+    <div id="jqxgrid"></div>
+</body>
+
+</html>

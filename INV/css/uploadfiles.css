@@ -1,0 +1,47 @@
+﻿
+ .uploadfile_item {margin-left: 766px; border: 1px solid #bebebe; padding: 5px; margin-bottom: -1px; height: auto; width: 24px;}
+ .uploadfile_item a {
+    background: url("../images/icon_plan_medico.png") no-repeat;
+    border-radius: 45px;
+    cursor: pointer;
+    display: block;
+    height: 20px;
+    padding: 2px;
+    width: 20px;                
+}            
+.uploadfile_item a:hover {background: url("../images/icon_plan_medico.png") no-repeat}
+
+.btn_r {}
+ .btn_r a {
+    background: url("../images/r.png") no-repeat scroll 2px 2px #002f4d;
+    border-radius: 45px;
+    cursor: pointer;
+    display: block;
+    height: 20px;
+    padding: 2px;
+    width: 20px;                
+}            
+.btn_r a:hover {background: url("../images/r.png") no-repeat scroll 2px 2px #0488bb;}
+.btn_c {}
+ .btn_c a {
+    background: url("../images/c.png") no-repeat scroll 2px 2px #002f4d;
+    border-radius: 45px;
+    cursor: pointer;
+    display: block;
+    height: 20px;
+    padding: 2px;
+    width: 20px;                
+}            
+.btn_c a:hover {background: url("../images/c.png") no-repeat scroll 2px 2px #0488bb;}
+
+.btn_d {}
+ .btn_d a {
+    background: url("../images/d.png") no-repeat scroll 2px 2px #002f4d;
+    border-radius: 45px;
+    cursor: pointer;
+    display: block;
+    height: 20px;
+    padding: 2px;
+    width: 20px;                
+}            
+.btn_d a:hover {background: url("../images/d.png") no-repeat scroll 2px 2px #0488bb;}

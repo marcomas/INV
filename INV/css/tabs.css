@@ -1,0 +1,77 @@
+﻿
+ .tabContainerPopup {
+    border: 1px solid #bebebe; 
+    display: inline-block; 
+    height: auto; margin-top: 30px;
+ }
+ .tabContainer {
+    width: 100%; border: 1px solid #bebebe; 
+    display: inline-block; 
+    height: auto; margin-top: 5px;
+ }
+ .tabContainer ul{
+    overflow:hidden; /*Clearing float. */
+          border-right:1px solid #fff;
+          height:35px;
+          /*position:absolute;*/ /*Takings tabs to higher layer */
+    z-index:100;
+    margin: 0px;
+    padding: 0px;
+ }
+ .tabContainer li{
+      float:left;
+      list-style:none;
+ }
+ .tabContainer li a{
+      background:#0488bb;
+      border-right:1px solid #002f4d;
+      color:#fff;
+      cursor:pointer;
+      display:block;
+      height:35px;
+      line-height:35px;
+      padding:0 20px;
+      text-decoration:none;
+      font-weight: bold;
+      
+ }
+ .tabContainer li a:hover{
+      background:#002f4d;
+      border-right:1px solid #11A4A2;
+      color:#fff;
+ }
+ .tabContainer li a.active{
+      background:#002f4d;
+      border-right:1px solid #11A4A2;
+      color:#fff;
+ }
+
+ .tabDetails{
+      text-align: left;
+      background:#fff;
+      border:1px solid #fff;
+      margin:0px 0 0; /*1px less then actual tab height to fix the border gap between active tab &amp; tab detail section. */
+}
+ .tabContents{
+      padding:60px 0px 0px;
+ }
+
+ .tabContents h1{
+      font-size: 20px;
+      text-align: left;
+      background: #f8f8f8;
+      padding: 6px;
+      color: #00295a;
+}
+
+ .tabContents h2{
+      font-size: 16px;
+      text-align: left;
+      text-decoration: underline;
+      padding: 6px;
+      color: #00295a;
+}
+ .tabContents p{
+    padding:0 0 10px;
+ }
+ 

@@ -1,0 +1,12 @@
+﻿$('#selTipo').prop("selectedIndex", indexTipo);
+alert($('#selTipo>option:selected').text());
+
+$("#jqxgrid").jqxGrid('setcolumnproperty', 'delete', 'hidden', true);
+
+{ text: 'Estatus', columntype: 'textbox', filtertype: 'checkedlist', datafield: 'estatus', width: 100 }
+
+*************************************************
+
+UPDATE Profesional SET Codigo = dbo.funGetCodigoFromId(@Id, 'MED', 5) WHERE Id = @Id
+
+************************************************

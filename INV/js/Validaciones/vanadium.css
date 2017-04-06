@@ -1,0 +1,28 @@
+@CHARSET "ISO-8859-1";
+
+input.vanadium-invalid, select.vanadium-invalid, textarea.vanadium-invalid {
+  border-color: red !important;
+  border-style: solid !important;
+}
+
+input.vanadium-valid, select.vanadium-valid, textarea.vanadium-valid {
+  border-style: solid !important;
+}
+
+.vanadium-message-value {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.vanadium-advice {
+  font-size: 13px;
+}
+
+.vanadium-advice.vanadium-invalid, .vanadium-advice.vanadium-invalid * {
+  position: relative; background: #a3000b; color: #fff; padding: 4px 10px; display: inline-block; -webkit-border-radius: 3px 3px; -moz-border-radius: 3px / 3px; border-radius: 3px / 3px; float: right; margin-left: 8px; 
+}
+
+input.vanadium-valid ~ .vanadium-valid-advice {
+  display: inline !important;
+} 
+
